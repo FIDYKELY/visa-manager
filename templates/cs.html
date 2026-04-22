@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire CERFA Court Séjour</title>
+    <style>
+        body {
+            margin: unset;
+            font-size: 11px;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        .print-a4 {
+            width: 210mm;
+            height: 297mm;
+            padding: 10mm;
+            padding-left: 15mm;
+            padding-right: 15mm;
+            box-sizing: border-box;
+            overflow: auto;
+            border: 1px dashed #ccc;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .gauche {
+            width: 75%;
+        }
+
+        .droite {
+            width: 25%;
+        }
+
+        .rounded {
+            border-style: solid;
+            border-width: 1px;
+        }
+
+        .field-group {
+            display: flex;
+        }
+
+        .rempli {
+            width: 100%;
+        }
+
+        .header-center {
+            display: flex;
+            justify-content: center;
+            padding-top: 10px;
+        }
+
+        .padding {
+            padding: 3px;
+        }
+
+        h2 {
+            font-size: 12px;
+        }
+
+        h1 {
+            font-size: 15px;
+        }
+
+        input[type="checkbox"] {
+            zoom: 0.75;
+        }
+
+        p {
+            font-size: 9px;
+            margin-block: unset;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="print-a4 page1">
+        <div class="header">
+            <div>
+                <div class="header">
+                    <div>
+                        <img src="" alt="ue" width="120px">
+                    </div>
+                    <div style="margin-left: 70px;display: flex;flex-direction: column;align-items: center;">
+                        <h2 style="margin-block-end: unset;">Formulaire de demande harmonisé</h2>
+                        <h1 style="margin-block-end: unset;">Demande de Visa Schengen</h1>
+                        <p>ce formulaire est gratuit</p>
+                    </div>
+                    <div style="display: flex;flex-direction: column;align-items: center;gap: 5px;margin-right: 10px;">
+                        <img src="" alt="cerfa" width="50px">
+                        <span>N°14076*05</span>
+                    </div>
+                </div>
+                <div style="margin-block: 10px;">
+                    <p>Les membres de la famille de ressortissants de l’UE, de l’EEE ou de la Confédération suisse ou de
+                        ressortissants du Royaume-Uni bénéficiaires de l'accord sur le retrait du Royaume-Uni ne doivent
+                        pas remplir les cases 21, 22, 30, 31 et 32 (assorties d'un *).</p>
+                    <p>Les données des cases 1 à 3 doivent correspondre à celles figurant sur le document de voyage.</p>
+                </div>
+            </div>
+            <div class="rounded"
+                style="display: flex;flex-direction: column;align-items: center;justify-content: center;width: 200px;margin-inline-end: 20px;margin-block-end: 10px;">
+                <span>PHOTO</span>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <div class="gauche">
+                <div class="field-group rounded padding" style="height: 40px;">
+                    <label for="visa_full_name" style="width: 60%;">1. Nom [nom de famille] :</label>
+                    <div id="visa_full_name" style="width: 40%;"></div>
+                </div>
+
+                <div class="field-group rounded padding" style="height: 30px;">
+                    <label for="visa_nom_famille" style="width: 60%;">2. Nom à la naissance [nom(s) de famille
+                        antérieur(s)] :</label>
+                    <div id="visa_nom_famille" style="width: 40%;"></div>
+                </div>
+
+                <div class="field-group rounded padding" style="height: 30px;">
+                    <label for="visa_prenom" style="width: 60%;">3. Prénom(s) [nom(s) usuel(s)] :</label>
+                    <div id="visa_prenom" style="width: 40%;"></div>
+                </div>
+
+                <div class="field-group rounded">
+                    <div style="width: 20%;" class="padding">
+                        <label for="visa_birth_date">4. Date de naissance (jour-mois-année)</label>
+                        <div id="visa_birth_date" class="rempli"></div>
+                    </div>
+                    <div class="rounded" style="width: 40%;">
+                        <div class="padding" style="height: 25px;">
+                            <label for="visa_lieu_naiss">5. Lieu de naissance</label>
+                            <div id="visa_lieu_naiss" class="rempli"></div>
+                        </div>
+                        <div class="padding" style="height: 25px;">
+                            <label for="visa_pays_naiss">6. Pays de naissance</label>
+                            <div id="visa_pays_naiss" class="rempli"></div>
+                        </div>
+                    </div>
+                    <div class="rounded" style="width: 40%;">
+                        <div class="padding" style="height: 25px;">
+                            <label for="visa_nationalite">7. Nationalité actuelle</label>
+                            <div id="visa_nationalite" class="rempli"></div>
+                        </div>
+                        <div class="padding" style="height: 25px;">
+                            <label for="visa_nationalite_diff">Nationalité à la naissance si différente</label>
+                            <div id="visa_nationalite_diff" class="rempli"></div>
+                        </div>
+                        <div class="padding" style="height: 40px;">
+                            <label for="visa_nationalite_diff">Autre(s) nationalité(s) :</label>
+                            <div id="visa_autres_nationalites" class="rempli"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field-group" style="height: 75px;">
+                    <div class="rounded padding" style="width: 35%;">
+                        <label style="width: 150px;">8.Sexe</label>
+                        <div>
+                            <input type="radio" id="visa_sexe" name="homme" value="1">
+                            <label for="visa_sexe">Homme</label>
+
+                            <input type="radio" id="visa_sexe" name="femme" value="1">
+                            <label for="visa_sexe">Femme</label>
+
+                            <input type="radio" id="visa_sexe" name="autre" value="1">
+                            <label for="visa_sexe_autre">Autre</label>
+
+                            <div id="visa_sexe_autre" class="rempli" style="display: none;"></div>
+                        </div>
+                    </div>
+                    <div class="rounded padding" style="width: 65%;">
+                        <label style="width: 150px;">9. Etat Civil</label>
+                        <div>
+                            <input type="radio" id="visa_etat_civil" name="celibataire" value="1">
+                            <label for="visa_etat_civil">Célibataire</label>
+                            <input type="radio" id="visa_etat_civil" name="marie" value="1">
+                            <label for="visa_etat_civil">Marié(e)</label>
+                            <input type="radio" id="visa_etat_civil" name="partenariat" value="1">
+                            <label for="visa_etat_civil" style="letter-spacing: -0.5px;">Partenariat enregistré</label>
+                            <input type="radio" id="visa_etat_civil" name="separe" value="1">
+                            <label for="visa_etat_civil">Séparé(e)</label>
+                        </div>
+                        <div class="field-group">
+                            <div>
+                                <input type="radio" id="visa_etat_civil" name="divorce" value="1">
+                                <label for="visa_etat_civil">Divorcé(e)</label>
+                                <input type="radio" id="visa_etat_civil" name="veuf" value="1">
+                                <label for="visa_etat_civil">Veuf(ve)</label>
+                            </div>
+                            <div class="field-group" style="width: 60%;">
+                                <div style="width: 60%;">
+                                    <input type="radio" id="visa_etat_civil" name="autre" value="1">
+                                    <label for="visa_etat_civil">Autre (à préciser)</label>
+                                </div>
+                                <div id="visa_etat_civil_autre"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="field-group rounded padding" style="height: 130px;flex-direction: column;">
+                    <label for="visa_autorite_parentale" class="rempli">10. Autorité parentale (pour les mineurs)/tuteur
+                        légal ( nom, prénom, adresse (si différente de celle du demandeur), numéro de téléphone, adresse
+                        électronique et nationalité) :</label>
+                    <div id="visa_autorite_parentale" class="rempli"></div>
+                </div>
+
+                <div class="field-group rounded padding" style="height: 45px;">
+                    <label for="visa_num_national_identite" style="width:70%;">11. Numéro national d'identité, le cas
+                        échéant :</label>
+                    <div id="visa_num_national_identite" class="rempli"></div>
+                </div>
+
+                <div class="rounded padding" style="height: 55px;">
+                    <div style="width: 34%;">
+                        <label for="visa_doc_voyage" style="width: 45%;">12. Type du document de voyage</label>
+                    </div>
+                    <div class="field-group" style="gap: 10px;">
+                        <div>
+                            <input type="checkbox" id="visa_doc_voyage" name="passeport_ordinaire" value="1">
+                            <label for="visa_doc_voyage">Passeport ordinaire</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="visa_doc_voyage" name="passeport_diplomatique" value="1">
+                            <label for="visa_doc_voyage">Passeport diplomatique</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="visa_doc_voyage" name="passeport_service" value="1">
+                            <label for="visa_doc_voyage">Passeport de service</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="visa_doc_voyage" name="passeport_officiel" value="1">
+                            <label for="visa_doc_voyage">Passeport officiel</label>
+                        </div>
+                    </div>
+                    <div class="field-group" style="gap: 10px;">
+                        <div>
+                            <input type="checkbox" id="visa_doc_voyage" name="passeport_special" value="1">
+                            <label for="visa_doc_voyage">Passeport spécial</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="visa_doc_voyage" name="autre" value="1">
+                            <label for="visa_doc_voyage">Autre document de voyage (à préciser) :</label>
+                        </div>
+                        <div>
+                            <div id="visa_doc_voyage_autre" class="rempli"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field-group" style="height: 60px;">
+                    <div class="rounded padding" style="width: 35%;">
+                        <label for="visa_num_document" class="rempli">13. Numéro du document de voyage</label>
+                        <div id="visa_num_document" class="rempli"></div>
+                    </div>
+                    <div class="rounded padding" style="width: 22%;">
+                        <label for="visa_date_delivrance" class="rempli">14. Date de délivrance</label>
+                        <div id="visa_date_delivrance" class="rempli"></div>
+                    </div>
+                    <div class="rounded padding" style="width: 20%;">
+                        <label for="visa_date_expiration" class="rempli">15. Date d'expiration</label>
+                        <div id="visa_date_expiration" class="rempli"></div>
+                    </div>
+                    <div class="rounded padding" style="width: 23%;">
+                        <label for="visa_delivre_par" class="rempli">16. Délivré (par pays)</label>
+                        <div id="visa_delivre_par" class="rempli"></div>
+                    </div>
+                </div>
+
+                <div class="field-group rounded padding" style="height: 50px;">
+                    <label for="visa_adresse" class="rempli" style="margin-block: 5px;">17. Données à caractère
+                        personnel du membre de la famille qui est un ressortissant de l’UE, de l’EEE ou de la
+                        Confédération suisse ou un ressortissant du Royaume-Uni bénéficiaire de l’accord sur le retrait
+                        du Royaume-Uni de l’UE, selon le cas :</label>
+                </div>
+
+                <div class="field-group rounded padding" style="height: 82px;">
+                    <div style="width: 50%;">
+                        <label for="visa_nom_famille_UE">Nom (nom de famille) : </label>
+                        <div id="visa_nom_famille_UE" class="rempli"></div>
+                    </div>
+                    <div>
+                        <label for="visa_nom_famille_UE">Prénom(s) [nom(s) usuel(s)] : </label>
+                        <div id="visa_prenom_famille" class="rempli"></div>
+                    </div>
+                </div>
+
+                <div class="field-group rounded padding" style="height: 90px;">
+                    <div style="width: 35%;">
+                        <label for="visa_nom_famille_UE">Date de naissance (jour-mois-année) :</label>
+                        <div id="visa_birth_famille" class="rempli"></div>
+                    </div>
+                    <div style="width: 13%;">
+                        <label for="visa_nom_famille_UE">Nationalité :</label>
+                        <div id="visa_nationalite_famille" class="rempli"></div>
+                    </div>
+                    <div>
+                        <label for="visa_nom_famille_UE">Numéro du document de voyage ou de la carte d’identité
+                            :</label>
+                        <div id="visa_num_nationalite_famille" class="rempli"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="droite rounded">
+                <div class="header-center" style="height: 15px; text-decoration: underline;"><strong>Partie réservée à
+                        l'administration</strong></div>
+                <div class="padding field-group" style="gap: 30px;flex-direction: column;">
+                    <div>Date de la demande :</div>
+                    <div>Numéro de la demande :</div>
+                    <div>
+                        Demande introduite :
+                        <div style="margin-top: 5px;">
+                            <div>
+                                <input type="checkbox">
+                                <label>Auprès d’une ambassade/d’un consulat</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>Auprès d’un prestataire de services</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>Auprès d’un intermédiaire commercial</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>à la frontière (nom) :</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>autres :</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>Responsable du dossier :</div>
+                    <div>
+                        Documents justificatifs :
+                        <div style="margin-top: 5px;">
+                            <div>
+                                <input type="checkbox">
+                                <label>Document de voyage</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>Moyens de subsistance</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>Invitation</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>Assurance maladie en voyage</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>Autres :</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        Décision concernant le visa :
+                        <div style="margin-top: 5px;">
+                            <div>
+                                <input type="checkbox">
+                                <label>Refusé</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>Délivré</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>A</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>C</label>
+                            </div>
+                            <div>
+                                <input type="checkbox">
+                                <label>VTL</label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div style="padding-bottom: 40px;">Agent(s) traitant la demande :</div>
+                </div>
+                <div class="padding">Valable :
+                    <div>A partir du .............</div>
+                    <div>......</div>
+                    <div>Jusqu’au ............</div>
+                    <div>......</div>
+                </div>
+                <div class="padding">Nombre d’entrées :
+                    <div class="field-group">
+                        <div style="margin-top: 5px;">
+                            <div style="margin-bottom: 5px;">
+                                <input type="checkbox">
+                                <label>1</label>
+                            </div>
+                            <div style="margin-bottom: 5px;">
+                                <input type="checkbox">
+                                <label>2</label>
+                            </div>
+                            <div style="margin-bottom: 5px;">
+                                <input type="checkbox">
+                                <label>Multiples</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>Nombre de jours : ............</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="print-a4 page2">
+        <div class="rounded padding" style="height: 60px;">
+            <label style="width: 100px;">18. Lien de parenté avec un ressortissant de l’UE, de l’EEE ou de la
+                Confédération suisse ou un ressortissant du Royaume-Uni bénéficiaire de l’accord de retrait du
+                Royaume-Uni de l’UE, selon le cas :</label>
+            <div class="field-group" style="margin-top: 10px; gap: 5px">
+                <div>
+                    <input type="checkbox" id="lien_parente" name="conjoint" value="1">
+                    <label for="lien_parente">Conjoint</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="lien_parente" name="enfant" value="1">
+                    <label for="lien_parente">Enfant</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="lien_parente" name="petit_fils" value="1">
+                    <label for="lien_parente">Petit-fils ou petite-fille</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="lien_parente" name="ascendant" value="1">
+                    <label for="lien_parente">Ascendant dépendant</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="lien_parente" name="partenariat" value="1">
+                    <label for="lien_parente">Partenariat enregistré</label>
+                </div>
+                <div class="field-group">
+                    <div>
+                        <input type="checkbox" id="lien_parente" name="autre" value="1">
+                    </div>
+                    <div class="field-group" style="gap: 5px;">
+                        <label for="visa_lien_parente_autre">Autre</label>
+                        <div id="visa_lien_parente_autre"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field-group rounded padding" style="height: 120px;">
+            <div style="width: 75%;">
+                <label for="visa_adresse">19. Adresse du domicile et adresse électronique du demandeur :</label>
+                <div id="visa_adresse" class="rempli"></div>
+            </div>
+            <div>
+                <label for="visa_phone">Numéro de téléphone :</label>
+                <div id="visa_phone" class="rempli"></div>
+            </div>
+        </div>
+
+        <div class="rounded padding" style="height: 45px;">
+            <label style="width: 150px;">20. Résidence dans un pays autre que celui de la nationalité actuelle :</label>
+            <div class="field-group" style="margin-top: 5px;">
+                <div style="width: 10%;">
+                    <input type="checkbox" id="visa_resident" name="non" value="1">
+                    <label for="visa_resident">Non</label>
+                </div>
+                <div style="width: 35%;">
+                    <input type="checkbox" id="visa_resident" name="oui" value="1">
+                    <label for="visa_resident">Oui : Titre de séjour ou équivalent</label>
+                </div>
+                <div class="field-group" style="width: 30%;">
+                    <label>N°</label>
+                    <div id="visa_num_resident"></div>
+                </div>
+                <div class="field-group" style="width: 25%;">
+                    <label>Valide jusqu’au</label>
+                    <div id="visa_valid_resident"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field-group rounded padding" style="height: 40px;">
+            <label for="visa_profession" style="width: 150px;">* 21. Profession actuelle :</label>
+            <div id="visa_profession" class="rempli"></div>
+        </div>
+
+        <div class="rounded padding" style="height: 80px;">
+            <label for="visa_employeur" style="width: 100%">* 22. Nom, adresse et numéro de téléphone de l’employeur.
+                Pour les étudiants, adresse de l’établissement d’enseignement :</label>
+            <div id="visa_employeur" class="rempli"></div>
+        </div>
+
+        <div class="field-group rounded padding" style="flex-direction: column;height: 80px;">
+            <span class="rempli">23. Objet(s) du voyage :</span>
+            <div class="field-group rempli" style="padding-left: 20px;gap: 15px;margin-top: 10px;">
+                <div>
+                    <input type="checkbox" id="visa_objet" name="tourisme" value="1">
+                    <label for="visa_objet">Tourisme</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="visa_objet" name="affaires" value="1">
+                    <label for="visa_objet">Affaires</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="visa_objet" name="visite" value="1">
+                    <label for="visa_objet">Visite à la famille ou à des amis</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="visa_objet" name="culture" value="1">
+                    <label for="visa_objet">Culture</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="visa_objet" name="sports" value="1">
+                    <label for="visa_objet">Sports</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="visa_objet" name="visite_officielle" value="1">
+                    <label for="visa_objet">Visite officielle</label>
+                </div>
+            </div>
+            <div class="field-group rempli" style="padding-left: 20px;gap: 21px;margin-top: 10px;">
+                <div>
+                    <input type="checkbox" id="visa_objet" name="medical" value="1">
+                    <label for="visa_objet">Raisons médicales</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="visa_objet" name="etudes" value="1">
+                    <label for="visa_objet">Études</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="visa_objet" name="transit" value="1">
+                    <label for="visa_objet">Transit aéroportuaire</label>
+                </div>
+                <div class="field-group">
+                    <input type="checkbox" id="visa_objet" name="autre" value="1">
+                    <label for="visa_objet">Autre (à préciser) :</label>
+                    <div id="visa_objet_autre"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field-group rounded padding" style="flex-direction: column;height: 90px;">
+            <label for="visa_info_objet">24. Informations complémentaires sur l'objet du voyage :</label>
+            <div id="visa_info_objet" class="rempli"></div>
+        </div>
+
+        <div class="field-group" style="height: 80px;">
+            <div class="rounded padding" style="width: 50%;">
+                <label for="visa_etat_membre">25. État membre de destination principale (et autres Etats membres de
+                    destination, le cas échéant) :</label>
+                <div id="visa_etat_membre" class="rempli"></div>
+            </div>
+            <div class="rounded padding" style="width: 50%;">
+                <label for="visa_etat_membre_1er_annee">26. État membre de première entrée :</label>
+                <div id="visa_etat_membre_1er_annee" class="rempli"></div>
+            </div>
+        </div>
+
+        <div class="rounded padding" style="height: 90px;">
+            <label style="width: 150px;">27. Nombre d’entrées demandées :</label>
+            <div class="field-group padding" style="gap: 10px;">
+                <div>
+                    <input type="checkbox" id="visa_nbr_entre" name="une_entree" value="1">
+                    <label for="visa_nbr_entre">Une entrée</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="visa_nbr_entre" name="deux_entrees" value="1">
+                    <label for="visa_nbr_entre">Deux entrées</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="visa_nbr_entre" name="entrees_multiples" value="1">
+                    <label for="visa_nbr_entre">Entrées multiples</label>
+                </div>
+            </div>
+
+            <div class="field-group padding">
+                <label for="visa_arrival_date" style="width: 80%;">Date d’arrivée prévue pour le 1er séjour envisagé
+                    dans l’espace Schengen :</label>
+                <div id="visa_arrival_date" style="width: 20%;"></div>
+            </div>
+
+            <div class="field-group padding">
+                <label for="visa_departure_date" style="width: 80%;">Date de départ prévue de l’espace Schengen après le
+                    1er séjour envisagé :</label>
+                <div id="visa_departure_date" style="width: 20%;"></div>
+            </div>
+        </div>
+
+        <div class="rounded padding" style="height: 40px;">
+            <label style="width: 150px;">28. Empreintes digitales relevées précédemment aux fins d’une demande de visa
+                Schengen :</label>
+            <div class="field-group" style="padding-top: 7px">
+                <div style="width: 10%;">
+                    <input type="checkbox" id="visa_empreinte" name="non" value="1">
+                    <label for="visa_empreinte">Non</label>
+                </div>
+                <div style="width: 15%;">
+                    <input type="checkbox" id="visa_empreinte" name="oui" value="1">
+                    <label for="visa_empreinte">Oui.</label>
+                </div>
+                <div class="field-group" style="width: 30%;gap:10px;">
+                    <label>Date, si elle est connue :</label>
+                    <div id="visa_empreinte_date"></div>
+                </div>
+                <div class="field-group" style="width: 45%;gap:10px;">
+                    <label>Numéro du visa, s’il est connu :</label>
+                    <div id="visa_num_visa"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded padding" style="height: 40px;">
+            <label style="width: 150px;">29. Autorisation d’entrée dans le pays de destination finale, le cas échéant
+                :</label>
+            <div class="field-group" style="padding-top: 7px">
+                <div class="field-group" style="width: 30%;gap:10px;">
+                    <label>Délivrée par</label>
+                    <div id="visa_autorisation_delivre_par"></div>
+                </div>
+                <div class="field-group" style="width: 30%;gap:10px;">
+                    <label>, valable du</label>
+                    <div id="visa_autorisation_validite"></div>
+                </div>
+                <div class="field-group" style="width: 25%;gap:10px;">
+                    <label>au</label>
+                    <div id="visa_autorisation_delivre_au"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded padding" style="height: 150px;">
+            <label style="width: 150px;">* 30. Nom et prénom de la ou des personnes qui invitent dans le ou les États
+                membres. A défaut, nom d’un ou des hôtels ou lieux d’hébergement temporaire dans le ou les États membres
+                :</label>
+            <div id="visa_hotel"></div>
+        </div>
+
+    </div>
+
+    <div class="print-a4 page3">
+        <div class="field-group" style="height: 150px;">
+            <div class="rounded padding" style="width: 75%;">
+                <label for="visa_adresse_inviteur">Adresse et adresse électronique de la ou des personnes qui invitent
+                    /du ou des hôtels /du ou des lieux d’hébergement temporaire :</label>
+                <div id="visa_adresse_inviteur" class="rempli"></div>
+            </div>
+            <div class="rounded padding" style="width: 25%;">
+                <label for="visa_phone_adresse_inviteur">Numéro de téléphone :</label>
+                <div id="visa_phone_adresse_inviteur" class="rempli"></div>
+            </div>
+        </div>
+
+        <div class="field-group" style="height: 150px;">
+            <div class="rounded padding" style="width: 75%;">
+                <label for="visa_hote">* 31. Nom et adresse de l’entreprise /l’organisation hôte :</label>
+                <div id="visa_hote" class="rempli"></div>
+            </div>
+            <div class="rounded padding" style="width: 25%;">
+                <label for="visa_phone_hote">Numéro de téléphone de l’entreprise /l’organisation :</label>
+                <div id="visa_phone_hote" class="rempli"></div>
+            </div>
+        </div>
+
+        <div class="rounded padding" style="height: 130px;">
+            <label for="visa_personne_de_contact">Adresse et adresse électronique de la ou des personnes qui invitent
+                /du ou des hôtels /du ou des lieux d’hébergement temporaire :</label>
+            <div id="visa_personne_de_contact" class="rempli"></div>
+        </div>
+
+        <div class="rounded padding" style="height: 30px;padding-top: 10px;">
+            <label>* 32. Les frais de voyage et de subsistance durant le séjour du demandeur sont financés :</label>
+        </div>
+
+        <div class="field-group" style="height: 220px;">
+            <div class="rounded padding" style="width: 50%;">
+                <div class="padding">
+                    <input type="checkbox" id="visa_financement" name="demandeur" value="1">
+                    <label for="visa_financement">Par le demandeur</label>
+                </div>
+                <div class="padding" style="padding-top: 10px;">
+                    Moyens de subsistance :
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_demandeur_financement_moyen" name="liquide" value="1">
+                        <label for="visa_demandeur_financement_moyen">Argent liquide</label>
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_demandeur_financement_moyen" name="cheque" value="1">
+                        <label for="visa_demandeur_financement_moyen">Chèques de voyage</label>
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_demandeur_financement_moyen" name="credit" value="1">
+                        <label for="visa_demandeur_financement_moyen">Carte de crédit</label>
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_demandeur_financement_moyen" name="hebergement" value="1">
+                        <label for="visa_demandeur_financement_moyen">Hébergement prépayé</label>
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_demandeur_financement_moyen" name="transport" value="1">
+                        <label for="visa_demandeur_financement_moyen">Transport prépayé</label>
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_demandeur_financement_moyen" name="autre" value="1">
+                        <label for="visa_demandeur_financement_moyen">Autre (à préciser) :</label>
+                        <div id="visa_demandeur_financement_moyen_autre" class="rempli"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="rounded padding" style="width: 50%;">
+                <div class="padding">
+                    <input type="checkbox" id="visa_financement" name="garant" value="1">
+                    <label for="visa_financement">Par un garant (hôte, entreprise, organisation), veuillez préciser
+                        :</label>
+                    <div>
+                        <div style="padding-top: 5px;">
+                            <input type="checkbox" id="visa_financement_garant" name="garant_vise" value="1">
+                            <label for="visa_financement_garant">Visé dans la case 30 ou 31</label>
+                        </div>
+                        <div style="padding-top: 5px;">
+                            <input type="checkbox" id="visa_financement_garant" name="garant_autre" value="1">
+                            <label for="visa_financement_garant">Autre (à préciser) :</label>
+                        </div>
+                        <div id="visa_garant_autre_detail" class="rempli"></div>
+                    </div>
+                </div>
+                <div class="padding" style="padding-top: 10px;">
+                    Moyens de subsistance :
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_garant_financement_moyen" name="liquide" value="1">
+                        <label for="visa_garant_financement_moyen">Argent liquide</label>
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_garant_financement_moyen" name="finance" value="1">
+                        <label for="visa_garant_financement_moyen">Hébergement fourni</label>
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_garant_financement_moyen" name="hebergement" value="1">
+                        <label for="visa_garant_financement_moyen">Tous les frais sont financés pendant le
+                            séjour</label>
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_garant_financement_moyen" name="transport" value="1">
+                        <label for="visa_garant_financement_moyen"> Transport prépayé</label>
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <input type="checkbox" id="visa_garant_financement_moyen" name="autre" value="1">
+                        <label for="visa_garant_financement_moyen">Autre (à préciser) :</label>
+                    </div>
+                    <div id="visa_garant_financement_moyen_autre" class="rempli"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded padding" style="height: 130px;">
+            <label for="visa_remplisseur">33. Nom et prénom de la personne qui remplit le formulaire de demande, si elle
+                n’est pas le demandeur :</label>
+            <div id="visa_remplisseur" class="rempli"></div>
+        </div>
+
+        <div class="field-group" style="height: 150px;">
+            <div class="rounded padding" style="width: 75%;">
+                <label for="visa_adresse_remplisseur">Adresse et adresse électronique de la personne qui remplit le
+                    formulaire de demande :</label>
+                <div id="visa_adresse_remplisseur" class="padding rempli"></div>
+            </div>
+            <div class="rounded padding" style="width: 25%;">
+                <label for="visa_num_remplisseur">Numéro de téléphone :</label>
+                <div id="visa_num_remplisseur" class="padding rempli"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="print-a4 page4">
+        <div class="rounded padding" style="margin-top: 10px;height: 30px;">
+            <p style="font-size: 13px;margin-top: 7px;">Je suis informé(e) que les droits de visa ne sont pas remboursés
+                si le visa est refusé.</p>
+        </div>
+
+        <div class="rounded padding" style="margin-top: 10px;height: 70px;">
+            <p style="font-size: 13px;margin-top: 7px;">Applicable en cas de délivrance d'un visa à entrées multiples
+            </p>
+            <p style="font-size: 13px;margin-top: 7px;">Je suis informé(e) de la nécessité de disposer d’une assurance
+                maladie en voyage adéquate pour mon premier séjour et lors de voyages ultérieurs sur le territoire des
+                États membres. </p>
+        </div>
+
+        <div class="rounded padding" style="margin-top: 10px;">
+            <p style="font-size: 13px;margin-top: 7px;">En connaissance de cause, j'accepte ce qui suit : aux fins de
+                l'examen de ma demande, il y a lieu de recueillir les données requises dans ce formulaire de demande, de
+                me photographier et, le cas échéant, de prendre mes empreintes digitales. Les données à caractère
+                personnel me concernant qui figurent dans le présent formulaire de demande, ainsi que mes empreintes
+                digitales et ma photo, seront communiquées aux autorités compétentes des États membres et traitées par
+                elles, aux fins de la décision relative à ma demande de visa,</p>
+            <p style="font-size: 13px;margin-top: 7px;">Ces données ainsi que celles concernant la décision relative à
+                ma demande, ou toute décision d'annulation, d'abrogation ou de prolongation de visa, seront saisies et
+                conservées dans le système d'information sur les visas (VIS) pendant une période maximale de cinq ans
+                durant laquelle elles seront accessibles aux autorités chargées des visas, aux autorités compétentes
+                chargées de contrôler les visas aux frontières extérieures et dans les États membres, aux autorités
+                compétentes en matière d'immigration et d'asile dans les États membres aux fins de la vérification du
+                respect des conditions d'entrée et de séjour réguliers sur le territoire des États membres, de
+                l'identification des personnes qui ne remplissent pas ou plus ces conditions, de l'examen d'une demande
+                d'asile et de la détermination de l'autorité responsable de cet examen. Dans certaines conditions, ces
+                données seront aussi accessibles aux autorités désignées des États membres et à Europol aux fins de la
+                prévention et de la détection des infractions terroristes et des autres infractions pénales graves,
+                ainsi qu'aux fins des enquêtes en la matière. Les autorités de l'État membre compétentes pour le
+                traitement des données sont le Ministère de l’Intérieur (Place Beauvau - 75800 Paris CEDEX 08) et le
+                Ministère de l’Europe et des Affaires Etrangères (27 rue de la Convention – 75732 PARIS Cedex 15). </p>
+            <p style="font-size: 13px;margin-top: 7px;">Je suis informé(e) de mon droit d'obtenir auprès de n'importe
+                quel État membre la notification des données me concernant qui sont enregistrées dans le VIS ainsi que
+                de l'État membre qui les a transmises, et de demander que les données me concernant soient rectifiées si
+                elles sont erronées ou effacées si elles ont été traitées de façon illicite. À ma demande expresse,
+                l'autorité qui a examiné ma demande m'informera de la manière dont je peux exercer mon droit de vérifier
+                les données à caractère personnel me concernant et de les faire rectifier ou effacer, y compris des
+                voies de recours prévues à cet égard par le droit national de l'État membre concerné. L'autorité de
+                contrôle nationale dudit État membre [ <strong>Nationale de l'Informatique et des Libertés – 3 Place de
+                    Fontenoy - TSA 80715 - 75334 PARIS CEDEX 07 </strong>] pourra être saisie des demandes concernant la
+                protection des données à caractère personnel</p>
+            <p style="font-size: 13px;margin-top: 7px;">Je déclare qu'à ma connaissance, toutes les indications que j'ai
+                fournies sont correctes et complètes. Je suis informé(e) que toute fausse déclaration entraînera le
+                rejet de ma demande ou l'annulation du visa s'il a déjà été délivré, et peut également entraîner des
+                poursuites pénales à mon égard en application du droit de l'État membre qui traite la demande.</p>
+            <p style="font-size: 13px; margin-bottom: 20px;margin-top: 7px;">Je m'engage à quitter le territoire des
+                États membres avant l'expiration du visa, si celui-ci m'est accordé. J'ai été informé(e) que la
+                possession d'un visa n'est que l'une des conditions préalables d'entrée sur le territoire européen des
+                États membres. Le simple fait qu'un visa m'ait été accordé ne signifie pas que j'aurai droit à une
+                indemnisation si je ne respecte pas les dispositions pertinentes à l'article 6, paragraphe 1, du
+                règlement UE 2016/399 ( code frontières Schengen) et que l'entrée m'est par conséquent refusée. Le
+                respect des conditions préalables d'entrée sera contrôlé à nouveau au moment de l'entrée sur le
+                territoire européen des États membres.</p>
+        </div>
+
+        <div class="field-group" style="height: 100px;margin-top: 10px;">
+            <div class="rounded padding" style="width: 30%;">
+                <label style="margin-top: 10px;">Lieu et date :</label>
+            </div>
+            <div class="rounded padding" style="width: 70%;">
+                <label style="margin-top: 10px;">Signature du demandeur (signature de l’autorité parentale/du tuteur
+                    légal, le cas échéant) :</label>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
