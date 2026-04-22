@@ -768,6 +768,7 @@ class Visa_Admin {
 			'visa_etat_membre',//
 			'visa_etat_membre_1er_annee',//
 			'visa_nbr_entre',//
+			'visa_nombre_voyages_annee',//
 			'visa_empreinte',//
 			'visa_empreinte_date',//
 			'visa_num_visa',//
@@ -1197,6 +1198,7 @@ class Visa_Admin {
 		$visa_etat_membre   = get_post_meta( $post->ID, 'visa_etat_membre', true );
 		$visa_etat_membre_1er_annee   = get_post_meta( $post->ID, 'visa_etat_membre_1er_annee', true );
 		$visa_nbr_entre   = get_post_meta( $post->ID, 'visa_nbr_entre', true );
+		$visa_nombre_voyages_annee = get_post_meta( $post->ID, 'visa_nombre_voyages_annee', true );
 		$visa_empreinte   = get_post_meta( $post->ID, 'visa_empreinte', true );
 		$visa_empreinte_date   = get_post_meta( $post->ID, 'visa_empreinte_date', true );
 		$visa_num_visa   = get_post_meta( $post->ID, 'visa_num_visa', true );
@@ -1946,6 +1948,11 @@ class Visa_Admin {
 				. checked( $visa_nbr_entre, 'entrees_multiples', false ) 
 				. '> Entrées multiples';
 			echo '</label></p>';
+
+			// 27b. Nombre de voyages envisagés dans l'année à venir
+			echo '<p><label><strong>27b. Nombre de voyages envisagés dans l\'année à venir</strong><br>
+				<input type="number" name="visa_nombre_voyages_annee" value="' . esc_attr( $visa_nombre_voyages_annee ) . '" style="width:100px;" min="0">
+			</label></p>';
 
 			// Dates arrivée & départ
 			echo '<p><label><strong>Date d’arrivée prévue (1er séjour)</strong><br>

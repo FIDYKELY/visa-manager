@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // templates/form-level-3.php
 
 defined('ABSPATH') || exit;
@@ -190,7 +190,7 @@ $saved_employeur = get_post_meta($request_id, 'visa_employeur', true);
 $saved_etat_membre = get_post_meta($request_id, 'visa_etat_membre', true);
 $saved_etat_membre_1er_annee = get_post_meta($request_id, 'visa_etat_membre_1er_annee', true);
 $saved_nbr_entre = get_post_meta($request_id, 'visa_nbr_entre', true);
-$saved_nbr_voyages_annuels = get_post_meta($request_id, 'visa_nbr_voyages_annuels', true);
+$saved_nombre_voyages_annee = get_post_meta($request_id, 'visa_nombre_voyages_annee', true);
 $saved_arrival_date = get_post_meta($request_id, 'visa_arrival_date', true);
 $saved_departure_date = get_post_meta($request_id, 'visa_departure_date', true);
 
@@ -366,7 +366,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 		'etat_membre'              => 'sanitize_textarea_field',
 		'etat_membre_1er_annee'    => 'sanitize_text_field',
 		'nbr_entre'                => 'sanitize_text_field',
-		'nbr_voyages_annuels'      => 'absint',
+		'nombre_voyages_annee'     => 'intval',
 		'arrival_date'             => 'sanitize_text_field',
 		'departure_date'           => 'sanitize_text_field',
 		'empreinte'                => 'sanitize_text_field',
@@ -2381,6 +2381,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 		<input type="radio" name="nbr_entre" value="une_entree" <?php checked($saved_nbr_entre, "une_entree"); ?>> Une entrée<br>
 		<input type="radio" name="nbr_entre" value="deux_entrees" <?php checked($saved_nbr_entre, "deux_entrees"); ?>> Deux entrées<br>
 		<input type="radio" name="nbr_entre" value="entrees_multiples" <?php checked($saved_nbr_entre, "entrees_multiples"); ?>> Entrées multiples <br><br>
+
+<label>27b. Nombre de voyages envisagés dans l'année à venir :</label><br>
+<input type="number" name="nombre_voyages_annee" value="<?php echo esc_attr($saved_nombre_voyages_annee); ?>" min="0" style="width:100px;"><br><br>
 	
 		<label>Date d’arrivée prévue pour le 1er séjour envisagé dans l’espace Schengen :<span class="required">*</span></label><br>
 		<input type="date" name="arrival_date" value="<?php echo esc_attr($saved_arrival_date); ?>" required><br>
