@@ -82,7 +82,7 @@ $wilayas = [
 ];
 ?>
 
-<form method="post" class="visa-form" id="form-level-1" autocomplete="off">
+<form method="post" class="visa-form" id="form-level-1" autocomplete="off" class="notranslate" translate="no">
     <h2>Demande de visa – Étape 1</h2>
 
     <p>Date et heure actuelles : <strong><?php echo esc_html($current_datetime); ?></strong></p>
@@ -374,7 +374,7 @@ $wilayas = [
     </div>
     
     <div class="form-field">
-        <label for="ia_profession">Profession :</label>
+        <label for="ia_profession">Activité professionnelle :</label>
         <select name="ia_profession" id="ia_profession">
             <option value="">&nbsp;</option>
             <option value="65001">Agriculteur</option>
@@ -416,8 +416,9 @@ $wilayas = [
             <option value="83002">Sportif</option>
         </select>
     </div>
-    <label>Secteur d'activité :<span class="required">*</span></label><br>
-    		<select name="secteur_activite">
+    <div id="secteur_activite_container">
+        <label>Secteur d'activité :<span class="required">*</span></label><br>
+        		<select name="secteur_activite" id="secteur_activite">
 			<option value="">-- Sélectionnez un secteur d'activité --</option>
 			<option value="Activités de services administratifs et de soutien">Activités de services administratifs et de soutien</option>
 			<option value="Activités des ménages en tant qu'employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre">Activités des ménages en tant qu'employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre</option>
@@ -442,7 +443,8 @@ $wilayas = [
 			<option value="Santé humaine et action sociale">Santé humaine et action sociale</option>
 			<option value="Transports et entreposage">Transports et entreposage</option>
             </select>
-    <br><br>
+        <br><br>
+    </div>
     <label for="ia_revenu_local">Comment subvenez vous à vos besoins ? (Montant)</label><br>
     <input type="text" name="ia_revenu_local"><br><br>
     <label for="ia_destination">Destination principale :</label><br>
@@ -898,3 +900,36 @@ $wilayas = [
 
 <!-- âÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂ URL corrigée (sans espaces) -->
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script>
+// Gestion du secteur d'activité selon la profession sélectionnée
+document.addEventListener('DOMContentLoaded', function() {
+    const professionSelect = document.getElementById('ia_profession');
+    const secteurContainer = document.getElementById('secteur_activite_container');
+    const secteurSelect = document.getElementById('secteur_activite');
+    
+    // Professions qui ne nécessitent pas de secteur d'activité (codes: 67006=Chômeur, 82001=Retraite, 83001=Sans profession)
+    const professionsWithoutSecteur = ['67006', '82001', '83001'];
+    
+    function toggleSecteurActivite() {
+        const selectedValue = professionSelect.value;
+        
+        if (professionsWithoutSecteur.includes(selectedValue)) {
+            // Masquer le secteur d'activité et vider sa valeur
+            secteurContainer.style.display = 'none';
+            secteurSelect.value = '';
+            secteurSelect.removeAttribute('required');
+        } else {
+            // Afficher le secteur d'activité
+            secteurContainer.style.display = 'block';
+            secteurSelect.setAttribute('required', 'required');
+        }
+    }
+    
+    // Écouteur d'événement sur le changement de profession
+    professionSelect.addEventListener('change', toggleSecteurActivite);
+    
+    // Initialisation au chargement de la page
+    toggleSecteurActivite();
+});
+</script>

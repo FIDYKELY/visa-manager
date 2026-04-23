@@ -610,7 +610,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 
 <h2>Étape 3 – Informations personnelles</h2>
 
-<form method="post" enctype="multipart/form-data" class="visa-form" autocomplete="off">
+<form method="post" enctype="multipart/form-data" class="visa-form" autocomplete="off" translate="no">
     <input type="hidden" name="request_id" value="<?php echo esc_attr($request_id); ?>" />
 	<input type="hidden" name="max_days" id="max_days" value="<?php echo esc_attr($shortstay_max); ?>" />
 	
@@ -1947,7 +1947,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
         </select><br><br>
 	
 		<div id="profession">
-				<label>20. Profession actuelle <span class="required">*</span></label><br>
+				<label>20. Activité professionnelle <span class="required">*</span></label><br>
 				<select name="profession" required>
 						<option value="">&nbsp;</option>
 						<option value="65001" <?php selected($saved_profession, '65001'); ?>>Agriculteur</option>
@@ -5677,7 +5677,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
         </select><br><br>
 	
 		<div id="profession">
-			<label>20. Profession actuelle <span class="required">*</span></label><br>
+			<label>20. Activité professionnelle <span class="required">*</span></label><br>
 			<select name="profession" required>
 				<option value="">&nbsp;</option>
 				<option value="65001" <?php selected($saved_profession, '65001'); ?>>Agriculteur</option>

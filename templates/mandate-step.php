@@ -319,9 +319,9 @@ if (isset($_POST['accept_mandate'])) {
 }
 ?>
 
-<h2>Étape finale – Mandat</h2>
+<h2 translate="no">Étape finale – Mandat</h2>
 
-<div style="border:1px solid #ccc; padding:20px; margin-bottom:20px;">
+<div style="border:1px solid #ccc; padding:20px; margin-bottom:20px;" translate="no">
     <h3>Aperçu du Mandat</h3>
     <p>Je soussigné(e), <strong><?php echo esc_html($applicant_name); ?></strong>, né(e) le <strong><?php echo esc_html($birth_date); ?></strong> à <strong><?php echo esc_html($birth_place); ?></strong>, de nationalité <strong><?php echo esc_html($nationalite); ?></strong>, titulaire du passeport n° <strong><?php echo esc_html($passport_number); ?></strong>, résidant à <strong><?php echo esc_html($address); ?></strong>,</p>
     <p>donne pouvoir à l’entreprise <strong><?php echo esc_html($company_name); ?></strong>,</p>
@@ -372,7 +372,7 @@ if (isset($_POST['accept_mandate'])) {
 </div>
 
 <!-- Dans mandate-step.php -->
-<form method="post" id="visa-mandate-form">
+<form method="post" id="visa-mandate-form" translate="no">
     <?php wp_nonce_field('visa_mandate_submit', 'visa_mandate_nonce'); ?>
     <input type="hidden" name="request_id" value="<?php echo esc_attr($request_id); ?>" />
     <label>

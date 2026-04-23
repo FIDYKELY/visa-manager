@@ -69,6 +69,11 @@ add_action('plugins_loaded', function () {
     new Visa_Rest_Update();
 });
 
+function custom_checkout_notranslate() {
+    return '<div class="notranslate" translate="no">' . do_shortcode('[woocommerce_checkout]') . '</div>';
+}
+add_shortcode('custom_checkout', 'custom_checkout_notranslate');
+
 
 
 // Rôle

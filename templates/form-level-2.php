@@ -191,7 +191,7 @@ if ( isset($_POST['visa_level2_submit']) ) {
 
 
 
-<form method="post" class="visa-form" autocomplete="off">
+<form method="post" class="visa-form" autocomplete="off" translate="no">
     <input type="hidden" name="request_id" value="<?php echo esc_attr($request_id); ?>" />
 	
 	<div class="form-field">

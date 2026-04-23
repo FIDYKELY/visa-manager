@@ -1843,8 +1843,9 @@ class Visa_Admin {
 			echo '</label></p>';
 			echo '</p>';
 			
-			echo '<p><label><strong>Secteur d\'activité</strong><br>';
-            echo '<select name="visa_secteur_activite" style="width:100%;">';
+			echo '<div id="visa_secteur_activite_container">';
+		echo '<p><label><strong>Secteur d\'activité</strong><br>';
+            echo '<select name="visa_secteur_activite" id="visa_secteur_activite" style="width:100%;">';
             echo '<option value="">-- Sélectionnez un secteur d\'activité --</option>';
             echo '<option value="Activités de services administratifs et de soutien"' . selected( $secteur_activite, 'Activités de services administratifs et de soutien', false ) . '>Activités de services administratifs et de soutien</option>';
             echo '<option value="Activités des ménages en tant qu\'employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre"' . selected( $secteur_activite, 'Activités des ménages en tant qu\'employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre', false ) . '>Activités des ménages en tant qu\'employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre</option>';
@@ -1870,6 +1871,7 @@ class Visa_Admin {
             echo '<option value="Transports et entreposage"' . selected( $secteur_activite, 'Transports et entreposage', false ) . '>Transports et entreposage</option>';
             
             echo '</select></label></p>';
+            echo '</div>';
 
 			// 22. Employeur / établissement
 			echo '<p><label><strong>22. Nom, adresse et téléphone employeur</strong><br>
@@ -2550,6 +2552,35 @@ class Visa_Admin {
 				$tbody.find("tr:first input").val("");
 				}
 			});
+			});
+			</script>';
+
+			// JS inline pour masquer le secteur d'activité selon la profession sélectionnée
+			echo '<script>
+			jQuery(function($){
+				// Professions qui ne nécessitent pas de secteur d\'activité
+				var professionsWithoutSecteur = ["Chômeur", "Retraite", "Sans profession"];
+				
+				function toggleSecteurActivite() {
+					var selectedProfession = $("select[name=\'visa_profession\']").val();
+					var $secteurContainer = $("#visa_secteur_activite_container");
+					var $secteurSelect = $("#visa_secteur_activite");
+					
+					if (professionsWithoutSecteur.indexOf(selectedProfession) !== -1) {
+						// Masquer le secteur d\'activité et vider sa valeur
+						$secteurContainer.hide();
+						$secteurSelect.val("").removeAttr("required");
+					} else {
+						// Afficher le secteur d\'activité
+						$secteurContainer.show();
+					}
+				}
+				
+				// Écouteur d\'événement sur le changement de profession
+				$("select[name=\'visa_profession\']").on("change", toggleSecteurActivite);
+				
+				// Initialisation au chargement de la page
+				toggleSecteurActivite();
 			});
 			</script>';
 
