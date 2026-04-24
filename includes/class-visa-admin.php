@@ -1788,7 +1788,7 @@ class Visa_Admin {
 			// 21. Profession actuelle
 			echo '
             <p><label><strong>20.Situation professionnelle</strong></label><br>
-            <select name="visa_situation_professionnelle" style="width:100%;" required>
+            <select name="visa_situation_professionnelle" id="visa_situation_professionnelle" style="width:100%;" required>
               <option value="">-- Sélectionnez une situation professionnelle --</option>
               <option value="En activité" ' . selected( $visa_situation_professionnelle, 'En activité', false ) . '>En activité</option>
               <option value="Sans profession" ' . selected( $visa_situation_professionnelle, 'Sans profession', false ) . '>Sans profession</option>
@@ -1798,9 +1798,11 @@ class Visa_Admin {
             </select>
             </p>';
             
+			// Conteneur pour les champs profession et secteur d'activité (masquable)
+			echo '<div id="visa_profession_container">';
 			
 			echo '<p><label><strong>21. Activité professionnelle actuelle</strong><span class="required">*</span><br>';
-			echo '<select name="visa_profession" required>';
+			echo '<select name="visa_profession" id="visa_profession" required>';
 						echo '<option value="">&nbsp;</option>';
 						echo '<option value="Agriculteur"' . selected($visa_profession, 'Agriculteur') . '>Agriculteur</option>';
 						echo '<option value="Architecte"' . selected($visa_profession, 'Architecte') . '>Architecte</option>';
@@ -1871,14 +1873,52 @@ class Visa_Admin {
             echo '<option value="Transports et entreposage"' . selected( $secteur_activite, 'Transports et entreposage', false ) . '>Transports et entreposage</option>';
             
             echo '</select></label></p>';
-            echo '</div>';
+            echo '</div>'; // Fin du secteur d'activité container
+            
+			echo '</div>'; // Fin du profession container (masque les deux champs)
+
+			// JS pour masquer/afficher les champs profession, secteur et employeur selon la situation
+			echo '<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				var situationSelect = $("select[name=visa_situation_professionnelle]");
+				var container = $("#visa_profession_container");
+				var employeurContainer = $("#visa_employeur_container");
+				var professionSelect = $("select[name=visa_profession]");
+				var secteurSelect = $("select[name=visa_secteur_activite]");
+				var employeurTextarea = $("textarea[name=visa_employeur]");
+				var situationsWithoutProfession = ["Chômeur", "Retraité", "Sans profession"];
+				
+				function toggleProfessionFields() {
+					var val = situationSelect.val();
+					if (situationsWithoutProfession.indexOf(val) !== -1) {
+						container.hide();
+						employeurContainer.hide();
+						professionSelect.val("").removeAttr("required");
+						secteurSelect.val("").removeAttr("required");
+						employeurTextarea.val("").removeAttr("required");
+						employeurContainer.find("input").val("");
+					} else {
+						container.show();
+						employeurContainer.show();
+						professionSelect.attr("required", "required");
+						employeurTextarea.attr("required", "required");
+					}
+				}
+				
+				situationSelect.on("change", toggleProfessionFields);
+				toggleProfessionFields();
+			});
+			</script>';
+
+			// Conteneur pour les champs employeur (masquable)
+			echo '<div id="visa_employeur_container">';
 
 			// 22. Employeur / établissement
 			echo '<p><label><strong>22. Nom, adresse et téléphone employeur</strong><br>
 				<textarea name="visa_employeur" style="width:100%;" required>' . esc_textarea( $visa_employeur ) . '</textarea>
 			</label></p>';
 			echo '
-                <p><label>Nom de l’employeur ou établissement<br>
+                <p><label>Nom de l\'employeur ou établissement<br>
                 <input type="text" name="visa_nom_employeur" value="' . esc_attr( $visa_nom_employeur ) . '" style="width:100%;">
                 </label></p>
                 
@@ -1901,11 +1941,11 @@ class Visa_Admin {
                 <p><label>Téléphone<br>
                 <input type="text" name="visa_num_employeur" value="' . esc_attr( $visa_num_employeur ) . '" style="width:100%;">
                 </label></p>
-                
+            
                 <p><label>Email<br>
                 <input type="email" name="visa_mail_employeur" value="' . esc_attr( $visa_mail_employeur ) . '" style="width:100%;">
                 </label></p>
-                ';
+            </div>';
 
 			// 23. Objet(s) du voyage
 			echo '<p><label><strong>23. Objet(s) du voyage</strong><br>';
@@ -2555,34 +2595,6 @@ class Visa_Admin {
 			});
 			</script>';
 
-			// JS inline pour masquer le secteur d'activité selon la profession sélectionnée
-			echo '<script>
-			jQuery(function($){
-				// Professions qui ne nécessitent pas de secteur d\'activité
-				var professionsWithoutSecteur = ["Chômeur", "Retraite", "Sans profession"];
-				
-				function toggleSecteurActivite() {
-					var selectedProfession = $("select[name=\'visa_profession\']").val();
-					var $secteurContainer = $("#visa_secteur_activite_container");
-					var $secteurSelect = $("#visa_secteur_activite");
-					
-					if (professionsWithoutSecteur.indexOf(selectedProfession) !== -1) {
-						// Masquer le secteur d\'activité et vider sa valeur
-						$secteurContainer.hide();
-						$secteurSelect.val("").removeAttr("required");
-					} else {
-						// Afficher le secteur d\'activité
-						$secteurContainer.show();
-					}
-				}
-				
-				// Écouteur d\'événement sur le changement de profession
-				$("select[name=\'visa_profession\']").on("change", toggleSecteurActivite);
-				
-				// Initialisation au chargement de la page
-				toggleSecteurActivite();
-			});
-			</script>';
 
 			// 30. Moyens d'existence
 			echo '<p><label><strong>29. Moyens d\'existence en France</strong><span class="required">*</span><br>

@@ -3313,14 +3313,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 		<label>au</label><br>
 		<input type="date" name="autorisation_delivre_au"><br><br>
 		
-		<label>Accueilli (e) à titre privé par</label>
-		<div style="display: flex;align-items: center;justify-content: space-around;margin: 10px 0px;">
-		    <div id="go-personne">Une personne</div>
-		    <div id="go-hotel">Hôtel ou lieu d’hébergement</div>
-		    <div id="go-entreprise">Une Entreprise ou Organisation</div>
-		</div>
-	
-		<div id="personne" style="display:none">
+		<label>Accueilli (e) à titre privé par</label><br><br>
+		
+		<div id="personne" style="display:block; margin-bottom:20px; border:1px solid #ddd; padding:15px; border-radius:6px;">
 		    <label>29.a. – Accueilli (e) à titre privé par une personne</label><br>
 		    <div style="display: flex; gap: 10px;justify-content: space-between;">
 		        <div>
@@ -3556,7 +3551,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
     		<input type="text" name="mail_accueil" value="<?php echo esc_attr($saved_mail_accueil); ?>"><br><br>
 	    </div>
 	    
-		<div id="hotel" style="display:none">
+		<div id="hotel" style="display:block; margin-bottom:20px; border:1px solid #ddd; padding:15px; border-radius:6px;">
 		    <label>29.b. Accueilli (e) à titre privé à l’hôtel ou dans une lieu d’hébergement</label><br>
 		    <div>
 		        <div>
@@ -3797,7 +3792,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 		<label style="display:none;">Numéro de téléphone portable :</label>
 	    <input type="text" name="phone_adresse_inviteur" style="display:none;" value="<?php echo esc_attr($saved_phone_adresse_inviteur); ?>" readonly>
 		
-		<div id="entreprise" style="display:none">
+		<div id="entreprise" style="display:block; margin-bottom:20px; border:1px solid #ddd; padding:15px; border-radius:6px;">
 		    <label>31. Accueilli (e) par une Entreprise ou Organisation</label><br>
     		<input type="text" name="nom_entreprise" value="<?php echo esc_attr($saved_nom_entreprise); ?>"><br><br>
     		
@@ -4272,12 +4267,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 
 			<!-- Choix du financeur -->
 			<div class="financing-options">
-				<label><input type="radio" name="financement" value="demandeur"> Par le demandeur</label>
-				<label><input type="radio" name="financement" value="garant"> Par un garant</label>
+				<label><input type="checkbox" name="financement[]" value="demandeur"> Par moi-même</label>
+				<label><input type="checkbox" name="financement[]" value="garant"> Par un autre garant</label>
 			</div>
 
 			<!-- Section Demandeur -->
-			<div class="subsection" data-for="demandeur">
+			<div class="subsistance" data-for="demandeur">
 				<p>Moyens de subsistance :<span class="required">*</span></p>
 				<div class="checkbox-grid">
 				<label><input type="checkbox" name="demandeur_financement_moyen[]" value="liquide"> Argent liquide</label>
@@ -4293,7 +4288,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 			</div>
 
 			<!-- Section Garant -->
-			<div class="subsection" data-for="garant">
+			<div class="subsistance" data-for="garant">
 				<p>Précisions sur le garant :</p>
 				<label><input type="radio" name="financement_garant" value="garant_vise"> Par l'entreprise ou l'organisation</label>
 				<label>
@@ -6236,7 +6231,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
     		<input type="text" name="mail_accueil" value="<?php echo esc_attr($saved_mail_accueil); ?>"><br><br>
 	    </div>
 	    
-		<div id="hotel" style="display:none">
+		<div id="hotel" style="display:block; margin-bottom:20px; border:1px solid #ddd; padding:15px; border-radius:6px;">
 		    <label>23.b. Accueilli (e) à titre privé à l’hôtel ou dans une lieu d’hébergement</label>
 		    <div>
 		        <div>
@@ -6468,7 +6463,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
     		<input type="text" name="mail_hotel" value="<?php echo esc_attr($saved_mail_hotel); ?>">
 	    </div>
 		
-		<div id="entreprise" style="display:none">
+		<div id="entreprise" style="display:block; margin-bottom:20px; border:1px solid #ddd; padding:15px; border-radius:6px;">
 		    <label>24. Accueilli (e) par une Entreprise ou Organisation</label><br>
     		<input type="text" name="nom_entreprise" value="<?php echo esc_attr($saved_nom_entreprise); ?>"><br><br>
     		
@@ -6695,7 +6690,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
         	<input type="text" name="mail_entreprise" value="<?php echo esc_attr($saved_mail_entreprise); ?>">
 		</div>
     	
-    	<div id="contact" style="display:none">
+    	<div id="contact" style="display:block; margin-bottom:20px; border:1px solid #ddd; padding:15px; border-radius:6px;">
     	    <label>Coordonnées du contact :</label>
 		    <div style="display: flex;justify-content: space-between;gap: 10px;">
 		        <div>
@@ -7890,12 +7885,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
       </legend>
       <!-- Choix du financeur -->
 			<div class="financing-options">
-				<label><input type="radio" name="financement" value="demandeur"> Par le demandeur</label>
-				<label><input type="radio" name="financement" value="garant"> Par un garant</label>
+				<label><input type="checkbox" name="financement[]" value="demandeur"> Par moi-même</label>
+				<label><input type="checkbox" name="financement[]" value="garant"> Par un autre garant</label>
 			</div>
 
 			<!-- Section Demandeur -->
-			<div class="subsection" data-for="demandeur">
+			<div class="subsistance" data-for="demandeur">
 				<p>Moyens de subsistance :<span class="required">*</span></p>
 				<div class="checkbox-grid">
 				<label><input type="checkbox" name="demandeur_financement_moyen[]" value="liquide"> Argent liquide</label>
@@ -7911,7 +7906,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 			</div>
 
 			<!-- Section Garant -->
-			<div class="subsection" data-for="garant">
+			<div class="subsistance" data-for="garant">
 				<p>Précisions sur le garant :</p>
 				<label><input type="radio" name="financement_garant" value="garant_vise"> Par l'entreprise ou l'organisation</label>
 				<label>
@@ -8249,6 +8244,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
         padding: 10px;
         border-radius: 10px;
 	}
+	
+	/* Styles pour saisie simultanée - France Visa */
+	#personne, #hotel, #entreprise, #contact {
+	    display: block !important;
+	    margin-bottom: 20px;
+	    padding: 15px;
+	    background: #f9f9f9;
+	    border: 1px solid #e0e0e0;
+	    border-radius: 8px;
+	}
+	
+	/* Les sous-sections de financement sont toujours visibles */
+	.subsection {
+	    display: block !important;
+	    margin-bottom: 20px;
+	    padding: 15px;
+	    background: #f9f9f9;
+	    border: 1px solid #e0e0e0;
+	    border-radius: 8px;
+	}
+	.subsistance {
+		display: none;
+	    margin-bottom: 20px;
+	    padding: 15px;
+	    background: #f9f9f9;
+	    border: 1px solid #e0e0e0;
+	    border-radius: 8px;
+	}
+	
+	/* Options de financement en ligne */
+	.financing-options label {
+	    display: inline-flex;
+	    align-items: center;
+	    margin-right: 15px;
+	    cursor: pointer;
+	}
+	
+	.financing-options input[type="checkbox"] {
+	    margin-right: 5px;
+	}
 </style>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
@@ -8455,6 +8490,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 			}, false);
 		});
 
+		/*
+		// SUPPRIMÉ : Gestion de l'affichage des sections demandeur/garant - remplacé par affichage simultané
 		// === 2. Financement ===
 		// Gestion de l'affichage des sections demandeur/garant pour court séjour ET long séjour
 		if (VISA_TYPE === 'court_sejour' || VISA_TYPE === 'long_sejour') {
@@ -8537,6 +8574,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 				});
 			}
 		}
+		*/
 
 		// === 3. Documents (upload) ===
 		const docContainer = document.getElementById('documents-list');
@@ -9513,6 +9551,8 @@ document.querySelector('input[name="arrival_date"]').addEventListener('change', 
         const infoPriseEnChargeTextarea = document.getElementById('info_prise_en_charge') || 
           document.querySelector('textarea[name="info_prise_en_charge"]');
 
+		/*
+		// SUPPRIMÉ : Logique d'affichage/masquage des blocs d'accueil remplacée par affichage simultané
 		const buttons = [
             { btn: "go-personne", targets: ["personne"] },
             { btn: "go-hotel", targets: ["hotel"] },
@@ -9598,6 +9638,7 @@ document.querySelector('input[name="arrival_date"]').addEventListener('change', 
             .forEach(field => {
                 field.addEventListener("input", updateTextarea);
             });
+		*/
 
         // Vérification de sécurité - Les éléments peuvent être dans un div caché, c'est normal
         console.log('VISA_TYPE:', VISA_TYPE);
@@ -10035,6 +10076,51 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('input[name="financement[]"]');
+
+    function toggleFinancingSections() {
+        // Supporte plusieurs formulaires sur la même page si nécessaire
+        const fieldsets = document.querySelectorAll('fieldset.financing');
+        
+        fieldsets.forEach(fieldset => {
+            const cbDemandeur = fieldset.querySelector('input[name="financement[]"][value="demandeur"]');
+            const cbGarant    = fieldset.querySelector('input[name="financement[]"][value="garant"]');
+            
+            const isDemandeur = cbDemandeur ? cbDemandeur.checked : false;
+            const isGarant    = cbGarant ? cbGarant.checked : false;
+
+            const secDemandeur = fieldset.querySelector('.subsistance[data-for="demandeur"]');
+            const secGarant    = fieldset.querySelector('.subsistance[data-for="garant"]');
+
+            // 1. Affichage / Masquage
+            if (secDemandeur) secDemandeur.style.display = isDemandeur ? 'block' : 'none';
+            if (secGarant)    secGarant.style.display    = isGarant    ? 'block' : 'none';
+
+            // 2. Gestion du required (évite le blocage HTML5 sur les champs cachés)
+            const toggleReq = (sec, show) => {
+                if (!sec) return;
+                sec.querySelectorAll('input, select, textarea').forEach(el => {
+                    if (el.type === 'hidden') return;
+                    // Exception : garant_autre_detail dépend du radio interne, on ne le touche pas ici
+                    if (el.name === 'garant_autre_detail') return;
+                    
+                    show ? el.setAttribute('required', 'required') : el.removeAttribute('required');
+                });
+            };
+
+            toggleReq(secDemandeur, isDemandeur);
+            toggleReq(secGarant, isGarant);
+        });
+    }
+
+    // Écouteurs
+    checkboxes.forEach(cb => cb.addEventListener('change', toggleFinancingSections));
+    
+    // Initialisation au chargement (gère le cas où le navigateur restaure les coches)
+    toggleFinancingSections();
 });
 </script>
 
