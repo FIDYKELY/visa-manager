@@ -2382,6 +2382,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 		<input type="radio" name="nbr_entre" value="deux_entrees" <?php checked($saved_nbr_entre, "deux_entrees"); ?>> Deux entrées<br>
 		<input type="radio" name="nbr_entre" value="entrees_multiples" <?php checked($saved_nbr_entre, "entrees_multiples"); ?>> Entrées multiples <br><br>
 
+		<label>27. Date d'entrée prévue sur le territoire de la France, ou dans l'espace Schengen en cas de transit (jour-mois-année) <span class="required">*</span></label><br>
+		<input type="date" name="arrival_date" value="<?php echo esc_attr($saved_arrival_date); ?>" required><br><br>
 <label>27b. Nombre de voyages envisagés dans l'année à venir :</label><br>
 <input type="number" name="nombre_voyages_annee" value="<?php echo esc_attr($saved_nombre_voyages_annee); ?>" min="0" style="width:100px;"><br><br>
 	
@@ -8613,50 +8615,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['visa_level3_submit'])
 			if (!maxDaysInput) return;
 
 			const maxDays = parseInt(maxDaysInput.value, 10);
+			console.log("==> maxDays ",maxDays);
 			const addBtnCalcul = document.getElementById('add-range');
 			const resultDisplay = document.getElementById('calculated-days');
 
 			function recalc() {
-                console.log('2');
-                let totalTaken = 0;
-            
-                // Récupérer la date d'arrivée
-                const arrivalInput = document.querySelector('input[name="arrival_date"]');
-                let arrivalDate = arrivalInput?.value ? new Date(arrivalInput.value) : null;
-            
-                // Calculer la date minimum : 6 mois (180 jours) avant l'arrivée
-                let windowStart = arrivalDate ? new Date(arrivalDate) : null;
-                if (windowStart) {
-                    windowStart.setDate(windowStart.getDate() - 180);
-                }
-            
-                document.querySelectorAll('.range-block').forEach(block => {
-                    const inDate = block.querySelector('.entry-date').value;
-                    const outDate = block.querySelector('.exit-date').value;
-            
-                    if (inDate && outDate) {
-                        const d1 = new Date(inDate);
-                        const d2 = new Date(outDate);
-            
-                        // IGNORER la période si elle est complètement hors fenêtre
-                        if (arrivalDate && (d2 < windowStart || d1 > arrivalDate)) {
-                            return;
-                        }
-            
-                        // Ajuster la période à la fenêtre si elle déborde
-                        const start = arrivalDate ? new Date(Math.max(d1, windowStart)) : d1;
-                        const end = arrivalDate ? new Date(Math.min(d2, arrivalDate)) : d2;
-            
-                        const diff = (end - start) / (1000 * 60 * 60 * 24);
-                        if (!isNaN(diff) && diff >= 0) {
-                            totalTaken += Math.floor(diff) + 1; // inclusif
-                        }
-                    }
-                });
-            
-                const remaining = Math.max(0, maxDays - totalTaken);
-                resultDisplay.textContent = remaining;
-            }
+				console.log('🔄 recalc() démarré');
+				
+				const maxDaysValue = maxDaysInput?.value?.trim();
+				const maxDays = maxDaysValue ? parseInt(maxDaysValue, 10) : 90;
+				
+				if (!resultDisplay) {
+					console.error('❌ #calculated-days introuvable !');
+					return;
+				}
+				
+				let totalTaken = 0;
+				const arrivalInput = document.querySelector('input[name="arrival_date"]');
+				const arrivalDateStr = arrivalInput?.value;
+				
+				console.log('📅 arrival_date:', arrivalDateStr);
+				
+				const arrivalDate = arrivalDateStr ? new Date(arrivalDateStr + 'T00:00:00') : null;
+				const windowStart = arrivalDate ? new Date(arrivalDate.getTime() - 180 * 24 * 60 * 60 * 1000) : null;
+				
+				// 👇 DEBUG : Combien de blocks ?
+				const blocks = document.querySelectorAll('.range-block');
+				console.log('🔍 .range-block trouvés:', blocks.length);
+				
+				blocks.forEach((block, idx) => {
+					console.log(`\n📦 Block #${idx + 1}:`);
+					
+					const entryInput = block.querySelector('.entry-date');
+					const exitInput = block.querySelector('.exit-date');
+					
+					if (!entryInput || !exitInput) {
+						console.warn('  ⚠️ Inputs entry/exit manquants dans ce block');
+						return;
+					}
+					
+					const inDateStr = entryInput.value;
+					const outDateStr = exitInput.value;
+					console.log(`  📥 Entrée: "${inDateStr}" | 📤 Sortie: "${outDateStr}"`);
+					
+					if (!inDateStr || !outDateStr) {
+						console.log('  ⏭️  Skip: dates incomplètes');
+						return;
+					}
+					
+					const d1 = new Date(inDateStr + 'T00:00:00');
+					const d2 = new Date(outDateStr + 'T00:00:00');
+					console.log(`  🗓️  d1: ${d1.toISOString()} | d2: ${d2.toISOString()}`);
+					
+					// Filtre fenêtre 180 jours
+					if (arrivalDate && (d2 < windowStart || d1 > arrivalDate)) {
+						console.log(`  ⏭️  Skip: hors fenêtre [${windowStart?.toISOString()} → ${arrivalDate.toISOString()}]`);
+						return;
+					}
+					
+					const start = arrivalDate ? new Date(Math.max(d1.getTime(), windowStart.getTime())) : d1;
+					const end = arrivalDate ? new Date(Math.min(d2.getTime(), arrivalDate.getTime())) : d2;
+					const diffMs = end - start;
+					const days = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+					
+					console.log(`  ✅ Ajout: ${days} jours (start: ${start.toDateString()}, end: ${end.toDateString()})`);
+					totalTaken += days;
+				});
+				
+				const remaining = Math.max(0, maxDays - totalTaken);
+				console.log(`\n📊 Résultat: max=${maxDays}, taken=${totalTaken}, remaining=${remaining}`);
+				
+				resultDisplay.textContent = remaining;
+				resultDisplay.dataset.totalTaken = totalTaken;
+				resultDisplay.dataset.maxDays = maxDays;
+			}
 
 
             // Appeler à chaque recalcul
