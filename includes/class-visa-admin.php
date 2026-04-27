@@ -55,6 +55,9 @@ class Visa_Admin {
 		// Tranfèrer de document refusé vers validé
 		add_action('wp_ajax_visa_transfer_refused_doc', [$this, 'visa_transfer_refused_doc_handler']);
 
+		// 👇 AJOUT : Action AJAX pour renvoyer les documents
+		add_action('wp_ajax_visa_resend_documents', [$this, 'ajax_resend_visa_documents']);
+
 		// Metabox pour afficher les documents refusés
 		add_action( 'add_meta_boxes', [$this, 'visa_metabox_documents_refuses'] );
 		
@@ -3065,6 +3068,18 @@ class Visa_Admin {
         } else {
             echo "<p><em>Aucun document d’expertise disponible.</em></p>";
         }
+
+        // 👇 AJOUT : Bouton pour renvoyer tous les documents
+        echo '<hr style="margin: 15px 0;">';
+        echo '<p><strong>📤 Renvoyer les documents au demandeur</strong></p>';
+        echo '<p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">';
+        echo 'Cela enverra un email contenant : Cerfa, Récépissé, Liste des pièces et Lettre de motivation.';
+        echo '</p>';
+        wp_nonce_field('visa_resend_docs_nonce', 'visa_resend_docs_nonce_field');
+        echo '<button type="button" class="button button-primary" id="visa-resend-docs" data-post-id="' . esc_attr($post->ID) . '">';
+        echo '🔄 Renvoyer tous les documents';
+        echo '</button>';
+        echo '<span id="visa-resend-status" style="margin-left: 10px; font-weight: 600;"></span>';
     }
     
     public function handle_download_visa_expertise() {
@@ -3253,6 +3268,68 @@ class Visa_Admin {
 		$pdf->Output('I','expertise_visa_' . $post_id . '.pdf');
 		exit;
 	}
+
+	/**
+	 * Handler AJAX pour renvoyer les documents via n8n
+	 */
+	public function ajax_resend_visa_documents() {
+		// Vérifications de sécurité
+		check_ajax_referer('visa_resend_docs_nonce', 'nonce');
+		
+		$post_id = absint($_POST['post_id'] ?? 0);
+		if (!$post_id || !get_post($post_id) || !current_user_can('edit_post', $post_id)) {
+			wp_send_json_error(['message' => 'Accès non autorisé ou ID invalide'], 403);
+		}
+		
+		// Optionnel : vérifier que les documents requis existent
+		$motivation_url = get_post_meta($post_id, 'visa_expertise_doc', true);
+		$documents = get_post_meta($post_id, 'visa_documents', true);
+		
+		if (empty($motivation_url) && (!is_array($documents) || empty($documents))) {
+			wp_send_json_error(['message' => 'Aucun document à envoyer pour ce dossier'], 400);
+		}
+		
+		// Appel au webhook n8n
+		$webhook_url = 'https://n8n.joel-stephanas.com/webhook/2a02f28a-0704-48f2-89ce-41a2170cce39';
+		$api_secret = defined('VISA_WEBHOOK_SECRET') ? VISA_WEBHOOK_SECRET : 'sk_live_51N2xZ3DfOq9lm2rX7bWj2fQ9g8aC3xY4zM5n6o7p8q9r0s1t2u3v4w5x6y7z8a9bC0D1E2F3G4H5I6J7K8L9M0N';
+		
+		$response = wp_remote_post($webhook_url, [
+			'body' => wp_json_encode([
+				'post_id' => $post_id,
+				'motivation_url' => $motivation_url,
+				'trigger' => 'admin_resend'
+			]),
+			'headers' => [
+				'Content-Type' => 'application/json',
+				'x-visa-webhook-secret' => $api_secret,
+			],
+			'timeout' => 30,
+		]);
+		
+		if (is_wp_error($response)) {
+			error_log('Erreur resend docs post #' . $post_id . ' : ' . $response->get_error_message());
+			wp_send_json_error(['message' => 'Échec de la communication avec le service d\'email'], 500);
+		}
+		
+		$body = wp_remote_retrieve_body($response);
+		$data = json_decode($body, true);
+		
+		// Log historique dans le post
+		$history = get_post_meta($post_id, 'visa_email_history', true);
+		if (!is_array($history)) $history = [];
+		$history[] = [
+			'date' => current_time('mysql'),
+			'type' => 'resend_admin',
+			'status' => 'success',
+			'trigger' => 'admin_button',
+		];
+		update_post_meta($post_id, 'visa_email_history', $history);
+		
+		wp_send_json_success([
+			'message' => 'Email de renvoi envoyé avec succès',
+			'response' => $data,
+		]);
+	}
 	
 	/**
      * Documents CRUD
@@ -3357,6 +3434,40 @@ class Visa_Admin {
             '1.0',                                              // version
             true                                                // in_footer
         );
+
+        // 👇 AJOUT : Script pour le bouton de renvoi des documents
+        wp_add_inline_script('visa-admin-docs', '
+            jQuery(document).ready(function($){
+                $("#visa-resend-docs").on("click", function(e){
+                    e.preventDefault();
+                    
+                    const button = $(this);
+                    const status = $("#visa-resend-status");
+                    const postId = button.data("post-id");
+                    
+                    // Désactiver le bouton pendant l\'envoi
+                    button.prop("disabled", true).text("Envoi en cours...");
+                    status.text("").css("color", "");
+                    
+                    $.post(ajaxurl, {
+                        action: "visa_resend_documents",
+                        post_id: postId,
+                        nonce: "' . wp_create_nonce('visa_resend_docs_nonce') . '"
+                    }, function(response){
+                        if (response.success) {
+                            status.text("✅ " + response.data.message).css("color", "#28a745");
+                            button.text("🔄 Renvoyer tous les documents");
+                        } else {
+                            status.text("❌ " + (response.data.message || "Erreur inconnue")).css("color", "#dc3232");
+                            button.prop("disabled", false).text("🔄 Renvoyer tous les documents");
+                        }
+                    }).fail(function(xhr){
+                        status.text("❌ Erreur serveur: " + xhr.status).css("color", "#dc3232");
+                        button.prop("disabled", false).text("🔄 Renvoyer tous les documents");
+                    });
+                });
+            });
+        ');
     }
 
 	/**
